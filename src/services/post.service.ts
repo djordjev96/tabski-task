@@ -8,11 +8,23 @@ import { InjectRepository } from "typeorm-typedi-extensions";
 export class PostService {
   constructor(
     @InjectRepository(Post)
-    private repo: Repository<Post>
+    private repo: Repository<Post>,
+    @InjectRepository(User)
+    private userRepo: Repository<User>
   ) {}
 
-  async createPost(title: string, content: string, author: User): Promise<Post> {
-    const post = this.repo.create({ title, content, author });
+  async createPost(
+    title: string,
+    content: string,
+    authorId: string
+  ): Promise<Post> {
+    const user = await this.userRepo.findOne({ where: { id: authorId } });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const post = this.repo.create({ title, content, author: user });
 
     return await this.repo.save(post);
   }

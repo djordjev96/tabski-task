@@ -23,8 +23,6 @@ export class UserService {
     return await this.repo.save(user);
   }
 
-  async login() {}
-
   async getAllUsers(): Promise<User[]> {
     return await this.repo.find({});
   }
@@ -64,6 +62,6 @@ export class UserService {
       throw new Error("User not found");
     }
 
-    return await this.repo.remove(user)
+    return await this.repo.remove(user);
   }
 }

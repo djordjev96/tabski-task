@@ -10,7 +10,7 @@ import {
 } from "typeorm";
 import { Post } from "./post.entity";
 
-@Entity()
+@Entity("User")
 export class User {
   @PrimaryGeneratedColumn("uuid")
   id: string;
