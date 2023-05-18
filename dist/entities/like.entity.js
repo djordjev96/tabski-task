@@ -9,49 +9,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.Like = void 0;
 const typeorm_1 = require("typeorm");
-const like_entity_1 = require("./like.entity");
 const post_entity_1 = require("./post.entity");
-let User = class User {
+const user_entity_1 = require("./user.entity");
+let Like = class Like {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
     __metadata("design:type", String)
-], User.prototype, "id", void 0);
+], Like.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], User.prototype, "name", void 0);
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.liked, {
+        onDelete: "CASCADE",
+    }),
+    __metadata("design:type", user_entity_1.User)
+], Like.prototype, "user", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ unique: true, nullable: false }),
-    __metadata("design:type", String)
-], User.prototype, "email", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ select: false }),
-    __metadata("design:type", String)
-], User.prototype, "password", void 0);
+    (0, typeorm_1.ManyToOne)(() => post_entity_1.Post, (post) => post.liked, {
+        onDelete: "CASCADE",
+    }),
+    __metadata("design:type", post_entity_1.Post)
+], Like.prototype, "post", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({ name: "created_at" }),
     __metadata("design:type", Date)
-], User.prototype, "createdAt", void 0);
+], Like.prototype, "createdAt", void 0);
 __decorate([
     (0, typeorm_1.UpdateDateColumn)({ name: "updated_at" }),
     __metadata("design:type", Date)
-], User.prototype, "updatedAt", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => post_entity_1.Post, (post) => post.author, {
-        cascade: true,
-    }),
-    __metadata("design:type", Array)
-], User.prototype, "posts", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => like_entity_1.Like, (like) => like.user, {
-        cascade: true,
-    }),
-    __metadata("design:type", Array)
-], User.prototype, "liked", void 0);
-User = __decorate([
-    (0, typeorm_1.Entity)("User")
-], User);
-exports.User = User;
+], Like.prototype, "updatedAt", void 0);
+Like = __decorate([
+    (0, typeorm_1.Entity)("Like")
+], Like);
+exports.Like = Like;

@@ -3,9 +3,11 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { Like } from "./like.entity";
 import { User } from "./user.entity";
 
 @Entity("Post")
@@ -29,4 +31,9 @@ export class Post {
     onDelete: "CASCADE",
   })
   author: User;
+
+  @OneToMany(() => Like, (like) => like.post, {
+    cascade: true,
+  })
+  liked: Like[];
 }

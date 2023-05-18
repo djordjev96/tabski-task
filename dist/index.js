@@ -11,12 +11,13 @@ const typeorm_1 = require("typeorm");
 const typeorm_typedi_extensions_1 = require("typeorm-typedi-extensions");
 const user_route_1 = require("./routes/user.route");
 const post_route_1 = require("./routes/post.route");
+const like_route_1 = require("./routes/like.route");
+const error_middleware_1 = require("./middlewares/error.middleware");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 const port = 3000;
-console.log(process.env.PGDATABASE);
 (0, typeorm_1.useContainer)(typeorm_typedi_extensions_1.Container);
 (0, typeorm_1.createConnection)({
     type: "postgres",
@@ -29,14 +30,17 @@ console.log(process.env.PGDATABASE);
     entities: ["dist/**/*.entity.js"],
 })
     .then(() => {
-    console.log("Yeaaah");
     const userRoute = new user_route_1.UserRoute();
     const postRoute = new post_route_1.PostRoute();
+    const likeRoute = new like_route_1.LikeRoute();
     app.get("/", (req, res) => {
         res.send("Hello");
     });
     app.use("/", userRoute.router);
     app.use("/", postRoute.router);
+    app.use("/", likeRoute.router);
+    //error handling
+    app.use(error_middleware_1.errorMiddleware);
 })
     .catch((err) => {
     console.error(`Couldn't connect to the database`);

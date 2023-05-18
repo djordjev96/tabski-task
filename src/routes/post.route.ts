@@ -7,7 +7,7 @@ import { Container } from "typeorm-typedi-extensions";
 export class PostRoute {
   private postController: PostController;
   public router: Router;
-  path = "post";
+  path = "posts";
 
   constructor() {
     this.postController = Container.get(PostController);

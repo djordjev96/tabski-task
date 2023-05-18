@@ -20,6 +20,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -37,8 +48,13 @@ let UserService = class UserService {
     createUser(name, email, password) {
         return __awaiter(this, void 0, void 0, function* () {
             const hashedPassword = yield bcrypt_1.default.hash(password, 8);
-            const user = this.repo.create({ name, email, password: hashedPassword });
-            return yield this.repo.save(user);
+            const createUser = this.repo.create({
+                name,
+                email,
+                password: hashedPassword,
+            });
+            const _a = yield this.repo.save(createUser), { password: string } = _a, user = __rest(_a, ["password"]);
+            return user;
         });
     }
     getAllUsers() {
@@ -58,16 +74,17 @@ let UserService = class UserService {
     }
     updateUser(id, updatedColumns) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield this.repo.findOne({ where: { id } });
-            if (!user) {
+            const findUser = yield this.repo.findOne({ where: { id } });
+            if (!findUser) {
                 // make error
                 throw new Error("User not found");
             }
             if (updatedColumns.password) {
                 updatedColumns.password = yield bcrypt_1.default.hash(updatedColumns.password, 8);
             }
-            Object.assign(user, updatedColumns);
-            return yield this.repo.save(user);
+            Object.assign(findUser, updatedColumns);
+            const _a = yield this.repo.save(findUser), { password: string } = _a, user = __rest(_a, ["password"]);
+            return user;
         });
     }
     deleteUser(id) {

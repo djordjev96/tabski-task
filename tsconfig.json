@@ -8,7 +8,8 @@
       "@interfaces/*": ["./interfaces/*"],
       "@routes/*": ["./routes/*"],
       "@services/*": ["./services/*"],
-      "@entities/*": ["./entities/*"]
+      "@entities/*": ["./entities/*"],
+      "@middlewares/*": ["./middlewares/*"]
     },
     /* Projects */
     // "incremental": true,                              /* Save .tsbuildinfo files to allow for incremental compilation of projects. */

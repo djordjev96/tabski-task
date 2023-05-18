@@ -15,12 +15,17 @@ export class UserService {
     name: string,
     email: string,
     password: string
-  ): Promise<User> {
+  ): Promise<Partial<User>> {
     const hashedPassword = await bcrypt.hash(password, 8);
 
-    const user = this.repo.create({ name, email, password: hashedPassword });
+    const createUser = this.repo.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
 
-    return await this.repo.save(user);
+    const { password: string, ...user } = await this.repo.save(createUser);
+    return user;
   }
 
   async getAllUsers(): Promise<User[]> {
@@ -37,10 +42,13 @@ export class UserService {
     return user;
   }
 
-  async updateUser(id: string, updatedColumns: Partial<User>): Promise<User> {
-    const user = await this.repo.findOne({ where: { id } });
+  async updateUser(
+    id: string,
+    updatedColumns: Partial<User>
+  ): Promise<Partial<User>> {
+    const findUser = await this.repo.findOne({ where: { id } });
 
-    if (!user) {
+    if (!findUser) {
       // make error
       throw new Error("User not found");
     }
@@ -49,9 +57,11 @@ export class UserService {
       updatedColumns.password = await bcrypt.hash(updatedColumns.password, 8);
     }
 
-    Object.assign(user, updatedColumns);
+    Object.assign(findUser, updatedColumns);
 
-    return await this.repo.save(user);
+    const { password: string, ...user } = await this.repo.save(findUser);
+
+    return user;
   }
 
   async deleteUser(id: string): Promise<User> {

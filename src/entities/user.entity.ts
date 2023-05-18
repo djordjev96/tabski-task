@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { Like } from "./like.entity";
 import { Post } from "./post.entity";
 
 @Entity("User")
@@ -21,7 +22,7 @@ export class User {
   @Column({ unique: true, nullable: false })
   email: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @CreateDateColumn({ name: "created_at" })
@@ -34,4 +35,9 @@ export class User {
     cascade: true,
   })
   posts: Post[];
+
+  @OneToMany(() => Like, (like) => like.user, {
+    cascade: true,
+  })
+  liked: Like[];
 }

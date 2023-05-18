@@ -6,6 +6,8 @@ import { createConnection, useContainer } from "typeorm";
 import { Container } from "typeorm-typedi-extensions";
 import { UserRoute } from "./routes/user.route";
 import { PostRoute } from "./routes/post.route";
+import { LikeRoute } from "./routes/like.route";
+import { errorMiddleware } from "./middlewares/error.middleware";
 
 dotenv.config();
 
@@ -28,6 +30,7 @@ createConnection({
   .then(() => {
     const userRoute = new UserRoute();
     const postRoute = new PostRoute();
+    const likeRoute = new LikeRoute();
 
     app.get("/", (req: Request, res: Response) => {
       res.send("Hello");
@@ -35,6 +38,10 @@ createConnection({
 
     app.use("/", userRoute.router);
     app.use("/", postRoute.router);
+    app.use("/", likeRoute.router);
+
+    //error handling
+    app.use(errorMiddleware);
   })
   .catch((err) => {
     console.error(`Couldn't connect to the database`);
