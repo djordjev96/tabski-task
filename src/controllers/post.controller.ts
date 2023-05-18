@@ -42,7 +42,7 @@ export class PostController {
 
   updatePost = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const post = await this.postService.patchPost(req.params.id, req.body);
+      const post = await this.postService.updatePost(req.params.id, req.body);
 
       res.status(200).send(post);
     } catch (err) {

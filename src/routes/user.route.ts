@@ -3,6 +3,7 @@ import { Container } from "typeorm-typedi-extensions";
 import { UserController } from "@/controllers/user.controller";
 import { CreateUserValidator } from "@/middlewares/create-user-validator.middleware";
 import { validate } from "@/middlewares/validator.middleware";
+import { UpdateUserValidator } from "@/middlewares/update-user-validator.middleware";
 
 export class UserRoute {
   private userController: UserController;
@@ -23,7 +24,11 @@ export class UserRoute {
     );
     this.router.get(`/${this.path}`, this.userController.getAllUsers);
     this.router.get(`/${this.path}/:id`, this.userController.getUserById);
-    this.router.patch(`/${this.path}/:id`, this.userController.updateUser);
+    this.router.patch(
+      `/${this.path}/:id`,
+      validate(UpdateUserValidator),
+      this.userController.updateUser
+    );
     this.router.delete(`/${this.path}/:id`, this.userController.deleteUser);
   }
 }

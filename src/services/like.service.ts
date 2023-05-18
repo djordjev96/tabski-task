@@ -50,7 +50,7 @@ export class LikeService {
 
     if (!like) {
       // make new error
-      throw new Error("Post not found");
+      throw new Error("Like not found");
     }
 
     return await this.likeRepo.remove(like);

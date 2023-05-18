@@ -57,7 +57,7 @@ let PostService = class PostService {
             return post;
         });
     }
-    patchPost(id, updatedColumns) {
+    updatePost(id, updatedColumns) {
         return __awaiter(this, void 0, void 0, function* () {
             const post = yield this.repo.findOne({ where: { id } });
             if (!post) {

@@ -40,6 +40,7 @@ __decorate([
     __metadata("design:type", Date)
 ], Like.prototype, "updatedAt", void 0);
 Like = __decorate([
-    (0, typeorm_1.Entity)("Like")
+    (0, typeorm_1.Entity)("Like"),
+    (0, typeorm_1.Index)(["user", "post"], { unique: true })
 ], Like);
 exports.Like = Like;

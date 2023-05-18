@@ -44,7 +44,7 @@ export class PostService {
     return post;
   }
 
-  async patchPost(id: string, updatedColumns: Partial<Post>): Promise<Post> {
+  async updatePost(id: string, updatedColumns: Partial<Post>): Promise<Post> {
     const post = await this.repo.findOne({ where: { id } });
 
     if (!post) {

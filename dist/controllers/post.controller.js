@@ -56,7 +56,7 @@ let PostController = class PostController {
         });
         this.updatePost = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const post = yield this.postService.patchPost(req.params.id, req.body);
+                const post = yield this.postService.updatePost(req.params.id, req.body);
                 res.status(200).send(post);
             }
             catch (err) {

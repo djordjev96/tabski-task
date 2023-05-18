@@ -8,7 +8,7 @@ import bcrypt from "bcrypt";
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private repo: Repository<User>
+    protected repo: Repository<User>
   ) {}
 
   async createUser(

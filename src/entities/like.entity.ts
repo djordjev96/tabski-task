@@ -1,6 +1,8 @@
 import {
   CreateDateColumn,
   Entity,
+  Index,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -9,6 +11,7 @@ import { Post } from "./post.entity";
 import { User } from "./user.entity";
 
 @Entity("Like")
+@Index(["user", "post"], { unique: true })
 export class Like {
   @PrimaryGeneratedColumn("uuid")
   id: string;
