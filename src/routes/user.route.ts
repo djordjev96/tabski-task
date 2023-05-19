@@ -1,17 +1,18 @@
 import { Router } from "express";
 import { Container } from "typeorm-typedi-extensions";
 import { UserController } from "@/controllers/user.controller";
-import { CreateUserValidator } from "@/middlewares/create-user-validator.middleware";
+import { CreateUserValidator } from "@/validators/create-user.validator";
 import { validate } from "@/middlewares/validator.middleware";
-import { UpdateUserValidator } from "@/middlewares/update-user-validator.middleware";
+import { UpdateUserValidator } from "@/validators/update-user.validator.";
+import { Routes } from "@/interfaces/routes.interface";
 
-export class UserRoute {
-  private userController: UserController;
-  public router: Router;
+export class UserRoute implements Routes {
+  controller: UserController;
+  router: Router;
   path = "users";
 
   constructor() {
-    this.userController = Container.get(UserController);
+    this.controller = Container.get(UserController);
     this.router = Router();
     this.initializeRoutes();
   }
@@ -20,15 +21,15 @@ export class UserRoute {
     this.router.post(
       `/${this.path}`,
       validate(CreateUserValidator),
-      this.userController.createUser
+      this.controller.createUser
     );
-    this.router.get(`/${this.path}`, this.userController.getAllUsers);
-    this.router.get(`/${this.path}/:id`, this.userController.getUserById);
+    this.router.get(`/${this.path}`, this.controller.getAllUsers);
+    this.router.get(`/${this.path}/:id`, this.controller.getUserById);
     this.router.patch(
       `/${this.path}/:id`,
       validate(UpdateUserValidator),
-      this.userController.updateUser
+      this.controller.updateUser
     );
-    this.router.delete(`/${this.path}/:id`, this.userController.deleteUser);
+    this.router.delete(`/${this.path}/:id`, this.controller.deleteUser);
   }
 }

@@ -29,7 +29,7 @@ let LikeController = class LikeController {
         this.likeService = likeService;
         this.createLike = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const like = yield this.likeService.createLike(req.body.authorId, req.body.postId);
+                const like = yield this.likeService.createLike(req.body.userId, req.body.postId);
                 res.status(201).send(like);
             }
             catch (err) {

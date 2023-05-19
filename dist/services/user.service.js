@@ -41,6 +41,7 @@ const typedi_1 = require("typedi");
 const typeorm_1 = require("typeorm");
 const typeorm_typedi_extensions_1 = require("typeorm-typedi-extensions");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const http_exception_1 = require("@/exceptions/http.exception");
 let UserService = class UserService {
     constructor(repo) {
         this.repo = repo;
@@ -66,8 +67,7 @@ let UserService = class UserService {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield this.repo.findOne({ where: { id } });
             if (!user) {
-                // make error
-                throw new Error("User not found");
+                throw new http_exception_1.HttpException(404, "User not found");
             }
             return user;
         });
@@ -76,8 +76,7 @@ let UserService = class UserService {
         return __awaiter(this, void 0, void 0, function* () {
             const findUser = yield this.repo.findOne({ where: { id } });
             if (!findUser) {
-                // make error
-                throw new Error("User not found");
+                throw new http_exception_1.HttpException(404, "User not found");
             }
             if (updatedColumns.password) {
                 updatedColumns.password = yield bcrypt_1.default.hash(updatedColumns.password, 8);
@@ -91,8 +90,7 @@ let UserService = class UserService {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield this.repo.findOne({ where: { id } });
             if (!user) {
-                // make error
-                throw new Error("User not found");
+                throw new http_exception_1.HttpException(404, "User not found");
             }
             return yield this.repo.remove(user);
         });

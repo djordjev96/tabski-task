@@ -1,8 +1,8 @@
 import {
+  Column,
   CreateDateColumn,
   Entity,
   Index,
-  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -25,6 +25,12 @@ export class Like {
     onDelete: "CASCADE",
   })
   post: Post;
+
+  @Column()
+  postId: string;
+
+  @Column()
+  userId: string;
 
   @CreateDateColumn({ name: "created_at" })
   createdAt: Date;

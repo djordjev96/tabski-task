@@ -1,5 +1,6 @@
 import { Post } from "@/entities/post.entity";
 import { User } from "@/entities/user.entity";
+import { HttpException } from "@/exceptions/http.exception";
 import { Service } from "typedi";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
@@ -21,7 +22,7 @@ export class PostService {
     const user = await this.userRepo.findOne({ where: { id: authorId } });
 
     if (!user) {
-      throw new Error("User not found");
+      throw new HttpException(404, "User not found");
     }
 
     const post = this.repo.create({ title, content, author: user });
@@ -37,8 +38,7 @@ export class PostService {
     const post = await this.repo.findOne({ where: { id } });
 
     if (!post) {
-      // make new error
-      throw new Error("Post not found");
+      throw new HttpException(404, "Post not found");
     }
 
     return post;
@@ -48,8 +48,7 @@ export class PostService {
     const post = await this.repo.findOne({ where: { id } });
 
     if (!post) {
-      // make new error
-      throw new Error("Post not found");
+      throw new HttpException(404, "Post not found");
     }
 
     Object.assign(post, updatedColumns);
@@ -61,8 +60,7 @@ export class PostService {
     const post = await this.repo.findOne({ where: { id } });
 
     if (!post) {
-      // make new error
-      throw new Error("Post not found");
+      throw new HttpException(404, "Post not found");
     }
 
     return await this.repo.remove(post);

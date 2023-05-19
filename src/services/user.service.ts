@@ -3,6 +3,7 @@ import { Service } from "typedi";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import bcrypt from "bcrypt";
+import { HttpException } from "@/exceptions/http.exception";
 
 @Service()
 export class UserService {
@@ -35,8 +36,7 @@ export class UserService {
   async getUser(id: string): Promise<User> {
     const user = await this.repo.findOne({ where: { id } });
     if (!user) {
-      // make error
-      throw new Error("User not found");
+      throw new HttpException(404, "User not found");
     }
 
     return user;
@@ -49,8 +49,7 @@ export class UserService {
     const findUser = await this.repo.findOne({ where: { id } });
 
     if (!findUser) {
-      // make error
-      throw new Error("User not found");
+      throw new HttpException(404, "User not found");
     }
 
     if (updatedColumns.password) {
@@ -68,8 +67,7 @@ export class UserService {
     const user = await this.repo.findOne({ where: { id } });
 
     if (!user) {
-      // make error
-      throw new Error("User not found");
+      throw new HttpException(404, "User not found");
     }
 
     return await this.repo.remove(user);

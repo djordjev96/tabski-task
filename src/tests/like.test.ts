@@ -30,11 +30,11 @@ describe("LikeService", () => {
       userRepository.findOne = jest.fn().mockReturnValue(userMock);
       postRepository.findOne = jest.fn().mockReturnValue(getPostMock);
       likeRepository.create = jest.fn().mockReturnValue({});
-      likeRepository.save = jest.fn().mockReturnValue(saveLikeMock);
+      likeRepository.save = jest.fn().mockReturnValue(getLikeMock);
 
       const result = await likeService.createLike(userMock.id, getPostMock.id);
 
-      expect(result).toEqual(saveLikeMock);
+      expect(result).toEqual(getLikeMock);
       expect(likeRepository.create).toHaveBeenCalledWith({
         user: userMock,
         post: getPostMock,

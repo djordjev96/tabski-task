@@ -19,6 +19,8 @@ export const saveLikeMock = {
 };
 
 export const getLikeMock = {
+  postId: "6fc0ecc0-a856-4257-92a8-d6fcea9a34f2",
+  userId: "2692135f-5de5-4d0c-8d4d-317c53806d4c",
   id: "4b80d27e-a522-4bbb-a53b-974df9646266",
   createdAt: "2023-05-18T12:48:51.706Z",
   updatedAt: "2023-05-18T12:48:51.706Z",

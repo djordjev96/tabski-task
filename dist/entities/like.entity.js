@@ -32,6 +32,14 @@ __decorate([
     __metadata("design:type", post_entity_1.Post)
 ], Like.prototype, "post", void 0);
 __decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Like.prototype, "postId", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Like.prototype, "userId", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)({ name: "created_at" }),
     __metadata("design:type", Date)
 ], Like.prototype, "createdAt", void 0);

@@ -9,7 +9,7 @@ export class LikeController {
   createLike = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const like = await this.likeService.createLike(
-        req.body.authorId,
+        req.body.userId,
         req.body.postId
       );
 

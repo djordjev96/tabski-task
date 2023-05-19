@@ -20,11 +20,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LikeService = void 0;
 const like_entity_1 = require("@/entities/like.entity");
 const post_entity_1 = require("@/entities/post.entity");
 const user_entity_1 = require("@/entities/user.entity");
+const http_exception_1 = require("@/exceptions/http.exception");
 const typedi_1 = require("typedi");
 const typeorm_1 = require("typeorm");
 const typeorm_typedi_extensions_1 = require("typeorm-typedi-extensions");
@@ -36,13 +48,14 @@ let LikeService = class LikeService {
     }
     createLike(userId, postId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield this.userRepo.findOne({ where: { id: userId } });
-            const post = yield this.postrepo.findOne({ where: { id: postId } });
-            if (!user || !post) {
+            const findUser = yield this.userRepo.findOne({ where: { id: userId } });
+            const findPost = yield this.postrepo.findOne({ where: { id: postId } });
+            if (!findUser || !findPost) {
                 // todo
-                throw new Error(`${!user ? "User" : "Post"} not found`);
+                throw new http_exception_1.HttpException(404, `${!findUser ? "User" : "Post"} not found`);
             }
-            const like = this.likeRepo.create({ user, post });
+            const createLike = this.likeRepo.create({ user: findUser, post: findPost });
+            const _a = yield this.likeRepo.save(createLike), { post, user } = _a, like = __rest(_a, ["post", "user"]);
             return yield this.likeRepo.save(like);
         });
     }
@@ -53,10 +66,11 @@ let LikeService = class LikeService {
     }
     getLike(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const like = yield this.likeRepo.findOne({ where: { id } });
+            const like = yield this.likeRepo.findOne({
+                where: { id },
+            });
             if (!like) {
-                // make new error
-                throw new Error("Like not found");
+                throw new http_exception_1.HttpException(404, `Like not found`);
             }
             return like;
         });
@@ -65,8 +79,7 @@ let LikeService = class LikeService {
         return __awaiter(this, void 0, void 0, function* () {
             const like = yield this.likeRepo.findOne({ where: { id } });
             if (!like) {
-                // make new error
-                throw new Error("Post not found");
+                throw new http_exception_1.HttpException(404, `Like not found`);
             }
             return yield this.likeRepo.remove(like);
         });

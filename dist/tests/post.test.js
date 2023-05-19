@@ -10,42 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const post_service_1 = require("@/services/post.service");
-const saveMock = {
-    id: "e8c474dc-db7b-4198-90b6-24b64044413e",
-    name: "AuthorName",
-    email: "test@test.com",
-    createdAt: "2023-05-18T09:11:06.675Z",
-    updatedAt: "2023-05-18T09:11:23.253Z",
-    password: "3219dno1u3n2i1jdni1o1",
-};
-const userMock = {
-    id: "e8c474dc-db7b-4198-90b6-24b64044413e",
-    name: "AuthorName",
-    email: "test@test.com",
-    createdAt: "2023-05-18T09:11:06.675Z",
-    updatedAt: "2023-05-18T09:11:23.253Z",
-};
-const savePostMock = {
-    title: "Title",
-    content: "Content",
-    author: {
-        id: "e8c474dc-db7b-4198-90b6-24b64044413e",
-        name: "name2a",
-        email: "sjajdajaaaas@hdashasd.com",
-        createdAt: "2023-05-18T09:11:06.675Z",
-        updatedAt: "2023-05-18T09:11:23.253Z",
-    },
-    id: "abfdfb15-760a-4275-abe6-80c5cd0e5809",
-    createdAt: "2023-05-18T11:57:49.045Z",
-    updatedAt: "2023-05-18T11:57:49.045Z",
-};
-const getPostMock = {
-    id: "abfdfb15-760a-4275-abe6-80c5cd0e5809",
-    title: "Title",
-    content: "Content",
-    createdAt: "2023-05-18T11:57:49.045Z",
-    updatedAt: "2023-05-18T11:57:49.045Z",
-};
+const user_mock_1 = require("./__mocks__/user.mock");
+const post_mock_1 = require("./__mocks__/post.mock");
 describe("PostService", () => {
     let postService;
     let postRepository;
@@ -57,37 +23,37 @@ describe("PostService", () => {
     });
     describe("createPost", () => {
         it("should return created post if user is found", () => __awaiter(void 0, void 0, void 0, function* () {
-            userRepository.findOne = jest.fn().mockReturnValue(userMock);
+            userRepository.findOne = jest.fn().mockReturnValue(user_mock_1.userMock);
             postRepository.create = jest.fn().mockReturnValue({});
-            postRepository.save = jest.fn().mockReturnValue(savePostMock);
-            const result = yield postService.createPost(savePostMock.title, savePostMock.content, savePostMock.author.id);
-            expect(result).toEqual(savePostMock);
+            postRepository.save = jest.fn().mockReturnValue(post_mock_1.savePostMock);
+            const result = yield postService.createPost(post_mock_1.savePostMock.title, post_mock_1.savePostMock.content, post_mock_1.savePostMock.author.id);
+            expect(result).toEqual(post_mock_1.savePostMock);
             expect(postRepository.create).toHaveBeenCalledWith({
-                title: saveMock.name,
-                content: saveMock.email,
-                author: userMock,
+                title: post_mock_1.savePostMock.title,
+                content: post_mock_1.savePostMock.content,
+                author: user_mock_1.userMock,
             });
         }));
         it("should throw an error if user is not found", () => __awaiter(void 0, void 0, void 0, function* () {
             userRepository.findOne = jest.fn().mockReturnValue(undefined);
-            expect(postService.createPost(savePostMock.title, savePostMock.content, "not-found-id")).rejects.toThrow("User not found");
+            expect(postService.createPost(post_mock_1.savePostMock.title, post_mock_1.savePostMock.content, "not-found-id")).rejects.toThrow("User not found");
         }));
     });
     describe("getAllPosts", () => {
         it("should return all posts", () => __awaiter(void 0, void 0, void 0, function* () {
-            postRepository.find = jest.fn().mockReturnValue([getPostMock]);
+            postRepository.find = jest.fn().mockReturnValue([post_mock_1.getPostMock]);
             const result = yield postService.getAllPosts();
-            expect(result).toEqual([getPostMock]);
+            expect(result).toEqual([post_mock_1.getPostMock]);
             expect(postRepository.find).toHaveBeenCalledWith({});
         }));
     });
     describe("getPost", () => {
         it("should return post with specified id", () => __awaiter(void 0, void 0, void 0, function* () {
-            postRepository.findOne = jest.fn().mockReturnValue(getPostMock);
-            const result = yield postService.getPost(getPostMock.id);
-            expect(result).toEqual(getPostMock);
+            postRepository.findOne = jest.fn().mockReturnValue(post_mock_1.getPostMock);
+            const result = yield postService.getPost(post_mock_1.getPostMock.id);
+            expect(result).toEqual(post_mock_1.getPostMock);
             expect(postRepository.findOne).toHaveBeenCalledWith({
-                where: { id: getPostMock.id },
+                where: { id: post_mock_1.getPostMock.id },
             });
         }));
         it("should throw an error if post is not found", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -102,14 +68,14 @@ describe("PostService", () => {
         }));
         it("should update the post with specified id", () => __awaiter(void 0, void 0, void 0, function* () {
             const updatedFields = { title: "UpdatedTitle" };
-            postRepository.findOne = jest.fn().mockReturnValue(getPostMock);
+            postRepository.findOne = jest.fn().mockReturnValue(post_mock_1.getPostMock);
             postRepository.save = jest
                 .fn()
-                .mockReturnValue(Object.assign(Object.assign({}, getPostMock), updatedFields));
-            const result = yield postService.updatePost(getPostMock.id, updatedFields);
-            expect(result).toEqual(Object.assign(Object.assign({}, getPostMock), updatedFields));
+                .mockReturnValue(Object.assign(Object.assign({}, post_mock_1.getPostMock), updatedFields));
+            const result = yield postService.updatePost(post_mock_1.getPostMock.id, updatedFields);
+            expect(result).toEqual(Object.assign(Object.assign({}, post_mock_1.getPostMock), updatedFields));
             expect(postRepository.findOne).toBeCalledWith({
-                where: { id: getPostMock.id },
+                where: { id: post_mock_1.getPostMock.id },
             });
         }));
     });
@@ -119,14 +85,14 @@ describe("PostService", () => {
             expect(postService.deletePost("not-found-id")).rejects.toThrow("Post not found");
         }));
         it("should delete post with specified id and return that post", () => __awaiter(void 0, void 0, void 0, function* () {
-            postRepository.findOne = jest.fn().mockReturnValue(getPostMock);
-            postRepository.remove = jest.fn().mockReturnValue(getPostMock);
-            const result = yield postService.deletePost(getPostMock.id);
-            expect(result).toEqual(getPostMock);
+            postRepository.findOne = jest.fn().mockReturnValue(post_mock_1.getPostMock);
+            postRepository.remove = jest.fn().mockReturnValue(post_mock_1.getPostMock);
+            const result = yield postService.deletePost(post_mock_1.getPostMock.id);
+            expect(result).toEqual(post_mock_1.getPostMock);
             expect(postRepository.findOne).toBeCalledWith({
-                where: { id: getPostMock.id },
+                where: { id: post_mock_1.getPostMock.id },
             });
-            expect(postRepository.remove).toBeCalledWith(getPostMock);
+            expect(postRepository.remove).toBeCalledWith(post_mock_1.getPostMock);
         }));
     });
 });

@@ -24,6 +24,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostService = void 0;
 const post_entity_1 = require("@/entities/post.entity");
 const user_entity_1 = require("@/entities/user.entity");
+const http_exception_1 = require("@/exceptions/http.exception");
 const typedi_1 = require("typedi");
 const typeorm_1 = require("typeorm");
 const typeorm_typedi_extensions_1 = require("typeorm-typedi-extensions");
@@ -36,7 +37,7 @@ let PostService = class PostService {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield this.userRepo.findOne({ where: { id: authorId } });
             if (!user) {
-                throw new Error("User not found");
+                throw new http_exception_1.HttpException(404, "User not found");
             }
             const post = this.repo.create({ title, content, author: user });
             return yield this.repo.save(post);
@@ -51,8 +52,7 @@ let PostService = class PostService {
         return __awaiter(this, void 0, void 0, function* () {
             const post = yield this.repo.findOne({ where: { id } });
             if (!post) {
-                // make new error
-                throw new Error("Post not found");
+                throw new http_exception_1.HttpException(404, "Post not found");
             }
             return post;
         });
@@ -61,8 +61,7 @@ let PostService = class PostService {
         return __awaiter(this, void 0, void 0, function* () {
             const post = yield this.repo.findOne({ where: { id } });
             if (!post) {
-                // make new error
-                throw new Error("Post not found");
+                throw new http_exception_1.HttpException(404, "Post not found");
             }
             Object.assign(post, updatedColumns);
             return yield this.repo.save(post);
@@ -72,8 +71,7 @@ let PostService = class PostService {
         return __awaiter(this, void 0, void 0, function* () {
             const post = yield this.repo.findOne({ where: { id } });
             if (!post) {
-                // make new error
-                throw new Error("Post not found");
+                throw new http_exception_1.HttpException(404, "Post not found");
             }
             return yield this.repo.remove(post);
         });
